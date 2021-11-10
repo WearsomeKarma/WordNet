@@ -1,47 +1,125 @@
 import edu.princeton.cs.algs4.Bag;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.In;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class WordNet {
-    private ArrayList<Bag<String>> synset_Points;
-    private ArrayList<Bag<Integer>> hypernym_Edges;
+    private ArrayList<String[]> synset_Points;
+    private ArrayList<Integer[]> hypernym_Edges;
     private HashMap<String, Bag<Integer>> noun_To_Synset_Lookup_Table;
-
-    ShortestCommonAncestor sca;
+    private final Digraph wordNet;
 
     // constructor takes the name of the two input files
-    public WordNet(String synsets, String hypernyms) {
-        sca = new ShortestCommonAncestor(wordNet);
+    public WordNet(String synsets, String hypernyms)
+    {
+        if (synsets == null)
+            throw new IllegalArgumentException("Synsets filename is null.");
+        if (hypernyms == null)
+            throw new IllegalArgumentException("Hypernyms filename is null.");
+
+        read_Synsets(synsets);
+
+        wordNet = new Digraph(synset_Points.size());
+
+        read_Hypernyms(hypernyms);
+    }
+
+    private void read_Synsets(String synsets)
+    {
+        In stream_Synset = new In(synsets);
+
+        String s;
+        while((s = stream_Synset.readLine()) != null)
+        {
+            String[] csv_Values = s.split(",");
+
+            if (csv_Values.length != 3)
+                throw new IllegalArgumentException("The CSV line is invalid and does not have exactly 3 entries. VALUE: " + s);
+
+            int synset_Index = Integer.parseInt(csv_Values[0]);
+
+            if (synset_Index != synset_Points.size())
+                throw new IllegalArgumentException("Synset ID is invalid. Was " + synset_Index + ", should be: " + synset_Points.size());
+
+            String[] nouns = csv_Values[1].split(" ");
+
+            synset_Points.add(nouns);
+
+            record_Nouns(nouns, synset_Index);
+        }
+    }
+
+    private void record_Nouns(String[] nouns, int synset_Point)
+    {
+        for(String noun : nouns)
+        {
+            if (!noun_To_Synset_Lookup_Table.containsKey(noun))
+            {
+                noun_To_Synset_Lookup_Table.put(noun, new Bag<>());
+            }
+
+            noun_To_Synset_Lookup_Table.get(noun).add(synset_Point);
+        }
+    }
+
+    private void read_Hypernyms(String hypernyms)
+    {
+        In stream_Hypernym = new In(hypernyms);
+
+        String s;
+        while((s = stream_Hypernym.readLine()) != null)
+        {
+            String[] csv_Values = s.split(",");
+
+            if (csv_Values.length < 1)
+                throw new IllegalArgumentException("Invalid hypernym entry. Entry was empty line.");
+
+            int value = Integer.parseInt(csv_Values[0]);
+
+            if (value != hypernym_Edges.size())
+                throw new IllegalArgumentException("Illegal ID for hypernym edge. Was: " + value + ", expected: " + hypernym_Edges.size());
+
+            Integer[] edges = new Integer[s.length()-1];
+
+            for(int i=0;i<edges.length;i++)
+            {
+                edges[i] = Integer.parseInt(csv_Values[i+1]);
+                wordNet.addEdge(value, edges[i]);
+            }
+
+            hypernym_Edges.add(edges);
+        }
     }
 
     // the set of all WordNet nouns
-    public Iterable<String> nouns() {
-        return noun_To_Synset_Lookup_Table.keySet();
+    public Iterable<String> nouns()
+    {
+        
     }
-
+        
     // is the word a WordNet noun?
-    public boolean isNoun(String word) {
-        if (word == null)
-            throw new IllegalArgumentException("word is null");
-        return noun_To_Synset_Lookup_Table.containsKey(word);
+    public boolean isNoun(String word)
+    {
+        
     }
-
+        
     // a synset (second field of synsets.txt) that is a shortest common ancestor
     // of noun1 and noun2 (defined below)
-    public String sca(String noun1, String noun2) {
-        int n = sca.ancestorSubset(noun_To_Synset_Lookup_Table.get(noun1),
-                                   noun_To_Synset_Lookup_Table.get(noun2));
-        return synset_Points.get(n).toString();
+    public String sca(String noun1, String noun2)
+    {
+
     }
 
     // distance between noun1 and noun2 (defined below)
-    public int distance(String noun1, String noun2) {
-        return sca.lengthSubset(noun_To_Synset_Lookup_Table.get(noun1),
-                                noun_To_Synset_Lookup_Table.get(noun2);
+    public int distance(String noun1, String noun2)
+    {
+        
     }
-
-    public static void main(String[] args) {
+    
+    public static void main(String[] args) 
+    {
 
     }
 }
