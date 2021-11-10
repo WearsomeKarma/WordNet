@@ -1,4 +1,11 @@
+import edu.princeton.cs.algs4.Bag;
+
+import java.util.ArrayList;
+
 public class WordNet {
+    private ArrayList<Bag<String>> synset_Points;
+    private ArrayList<Bag<Integer>> hypernym_Edges;
+    private HashMap<String, Bag<Integer>> noun_To_Synset_Lookup_Table;
 
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms)
@@ -22,7 +29,7 @@ public class WordNet {
     // of noun1 and noun2 (defined below)
     public String sca(String noun1, String noun2)
     {
-        
+
     }
 
     // distance between noun1 and noun2 (defined below)
