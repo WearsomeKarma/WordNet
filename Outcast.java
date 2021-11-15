@@ -1,3 +1,6 @@
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
+
 public class Outcast {
     WordNet wordnet;
 
@@ -34,7 +37,11 @@ public class Outcast {
 
     // test client (see below)
     public static void main(String[] args) {
-
+        WordNet wordnet = new WordNet(args[0], args[1]);
+        Outcast outcast = new Outcast(wordnet);
+        In in = new In(args[0]);
+        String[] nouns = in.readAllStrings();
+        StdOut.println(args[0] + "'s: " + outcast.outcast(nouns));
     }
 
 }
