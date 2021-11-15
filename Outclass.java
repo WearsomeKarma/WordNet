@@ -27,7 +27,7 @@ public class Outcast {
     int distanceSummation(String noun, String[] nouns) {
         int summation = 0;
         for (String s : nouns) {
-            summation += wordnet.distance(noun, nouns);
+            summation += wordnet.distance(noun, s);
         }
         return summation;
     }
