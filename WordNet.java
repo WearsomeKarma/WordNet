@@ -112,7 +112,7 @@ public class WordNet {
     // distance between noun1 and noun2 (defined below)
     public int distance(String noun1, String noun2) {
         return sca.lengthSubset(noun_To_Synset_Lookup_Table.get(noun1),
-                                noun_To_Synset_Lookup_Table.get(noun2);
+                                noun_To_Synset_Lookup_Table.get(noun2));
     }
 
 
