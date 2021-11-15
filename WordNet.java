@@ -13,12 +13,17 @@ public class WordNet {
     private final Digraph wordNet;
     private ShortestCommonAncestor sca;
 
+
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms) {
         if (synsets == null)
             throw new IllegalArgumentException("Synsets filename is null.");
         if (hypernyms == null)
             throw new IllegalArgumentException("Hypernyms filename is null.");
+
+        synset_Points = new ArrayList<>();
+        hypernym_Edges = new ArrayList<>();
+        noun_To_Synset_Lookup_Table = new HashMap<>();
 
         read_Synsets(synsets);
 
@@ -80,7 +85,7 @@ public class WordNet {
                         "Illegal ID for hypernym edge. Was: " + value + ", expected: "
                                 + hypernym_Edges.size());
 
-            Integer[] edges = new Integer[s.length() - 1];
+            Integer[] edges = new Integer[csv_Values.length - 1];
 
             for (int i = 0; i < edges.length; i++) {
                 edges[i] = Integer.parseInt(csv_Values[i + 1]);
@@ -129,6 +134,7 @@ public class WordNet {
         StdOut.println("TEST: WordNet.nouns()\nNOUNS: ");
         for(String noun : wordNet.nouns())
             StdOut.print(noun + " ");
+        StdOut.println();
         if (args.length < 3)
         {
             StdOut.println("An additional noun argument is required for additional tests.");
