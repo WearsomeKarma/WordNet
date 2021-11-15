@@ -39,7 +39,8 @@ public class WordNet {
         while ((s = stream_Synset.readLine()) != null) {
             String[] csv_Values = s.split(",");
 
-            if (csv_Values.length != 3)
+            // really dumb how test files VIOLATE CSV when we are told they are in csv.
+            if (csv_Values.length < 3)
                 throw new IllegalArgumentException(
                         "The CSV line is invalid and does not have exactly 3 entries. VALUE: " + s);
 
@@ -131,6 +132,16 @@ public class WordNet {
         }
         StdOut.println("TEST: WordNet.ctor(synsets.txt, hypernyms.txt):");
         WordNet wordNet = new WordNet(args[0], args[1]);
+        StdOut.println("VERTS: " + wordNet.wordNet.V() + " EDGES: " + wordNet.wordNet.E());
+        StdOut.println("ADJ:");
+        for(int i=0;i<wordNet.wordNet.V();i++)
+        {
+            StdOut.print("v: " + i + " - ");
+            Iterable<Integer> adj = wordNet.wordNet.adj(i);
+            for(Integer e : adj)
+                StdOut.print(e + " ");
+            StdOut.println();
+        }
         StdOut.println("TEST: WordNet.nouns()\nNOUNS: ");
         for(String noun : wordNet.nouns())
             StdOut.print(noun + " ");
