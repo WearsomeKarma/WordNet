@@ -39,7 +39,7 @@ public class WordNet {
         while ((s = stream_Synset.readLine()) != null) {
             String[] csv_Values = s.split(",");
 
-            if (csv_Values.length != 3)
+            if (csv_Values.length < 3)
                 throw new IllegalArgumentException(
                         "The CSV line is invalid and does not have exactly 3 entries. VALUE: " + s);
 
@@ -122,29 +122,25 @@ public class WordNet {
     }
 
 
-    public static void main(String[] args)
-    {
-        if (args.length < 2)
-        {
+    public static void main(String[] args) {
+        if (args.length < 2) {
             StdOut.println("Two file names are required as arguments.");
             return;
         }
         StdOut.println("TEST: WordNet.ctor(synsets.txt, hypernyms.txt):");
         WordNet wordNet = new WordNet(args[0], args[1]);
         StdOut.println("TEST: WordNet.nouns()\nNOUNS: ");
-        for(String noun : wordNet.nouns())
+        for (String noun : wordNet.nouns())
             StdOut.print(noun + " ");
         StdOut.println();
-        if (args.length < 3)
-        {
+        if (args.length < 3) {
             StdOut.println("An additional noun argument is required for additional tests.");
             return;
         }
         StdOut.println("TEST: WordNet.isNoun(noun)");
         boolean isNoun = wordNet.isNoun(args[2]);
         StdOut.println("IS_NOUN(" + args[2] + "): " + isNoun);
-        if (args.length < 4)
-        {
+        if (args.length < 4) {
             StdOut.println("An additional noun argument is required for additional tests.");
             return;
         }

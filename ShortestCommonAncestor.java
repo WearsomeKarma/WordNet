@@ -50,9 +50,14 @@ public class ShortestCommonAncestor {
         int shortestDistance = Integer.MAX_VALUE;
         int tempAncestor = -1;
         for (int targetVertex = 0; targetVertex < digraph.V(); targetVertex++) {
-            if (vPath.hasPathTo(targetVertex) && vPath.distTo(targetVertex) < shortestDistance
-                    && wPath.hasPathTo(targetVertex)
-                    && wPath.distTo(targetVertex) < shortestDistance) {
+            boolean hasVpath = vPath.hasPathTo(targetVertex);
+            boolean hasWpath = wPath.hasPathTo(targetVertex);
+            boolean vPathLengthSmaller = vPath.distTo(targetVertex) < shortestDistance;
+            boolean wPathLengthSmaller = wPath.distTo(targetVertex) < shortestDistance;
+            boolean allTrue = false;
+            if (hasVpath && vPathLengthSmaller && hasWpath && wPathLengthSmaller)
+                allTrue = true;
+            if (allTrue) {
                 int sum = vPath.distTo(targetVertex) + wPath.distTo(targetVertex);
                 if (sum < shortestDistance) {
                     shortestDistance = vPath.distTo(targetVertex) + wPath.distTo(targetVertex);
