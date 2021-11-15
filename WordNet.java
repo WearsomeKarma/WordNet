@@ -1,6 +1,7 @@
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,7 +117,36 @@ public class WordNet {
     }
 
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args)
+    {
+        if (args.length < 2)
+        {
+            StdOut.println("Two file names are required as arguments.");
+            return;
+        }
+        StdOut.println("TEST: WordNet.ctor(synsets.txt, hypernyms.txt):");
+        WordNet wordNet = new WordNet(args[0], args[1]);
+        StdOut.println("TEST: WordNet.nouns()\nNOUNS: ");
+        for(String noun : wordNet.nouns())
+            StdOut.print(noun + " ");
+        if (args.length < 3)
+        {
+            StdOut.println("An additional noun argument is required for additional tests.");
+            return;
+        }
+        StdOut.println("TEST: WordNet.isNoun(noun)");
+        boolean isNoun = wordNet.isNoun(args[2]);
+        StdOut.println("IS_NOUN(" + args[2] + "): " + isNoun);
+        if (args.length < 4)
+        {
+            StdOut.println("An additional noun argument is required for additional tests.");
+            return;
+        }
+        StdOut.println("TEST: WordNet.sca(noun1, noun2)");
+        String sca = wordNet.sca(args[2], args[3]);
+        StdOut.println("SCA(" + args[2] + ", " + args[3] + "): " + sca);
+        StdOut.println("TEST: WordNet.distance(noun1, noun2)");
+        int distance = wordNet.distance(args[2], args[3]);
+        StdOut.println("DISTANCE(" + args[2] + ", " + args[3] + ")");
     }
 }
