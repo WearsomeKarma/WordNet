@@ -3,6 +3,7 @@ import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Topological;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,19 +106,30 @@ public class WordNet {
     public boolean isNoun(String word) {
         if (word == null)
             throw new IllegalArgumentException("word is null");
+
         return noun_To_Synset_Lookup_Table.containsKey(word);
     }
 
     // a synset (second field of synsets.txt) that is a shortest common ancestor
     // of noun1 and noun2 (defined below)
     public String sca(String noun1, String noun2) {
+        if (noun1 == null)
+            throw new IllegalArgumentException("noun1 is null.");
+        if (noun2 == null)
+            throw new IllegalArgumentException("noun2 is null.");
+
         int n = sca.ancestorSubset(noun_To_Synset_Lookup_Table.get(noun1),
                                    noun_To_Synset_Lookup_Table.get(noun2));
-        return n+"";
+        return synset_Points.get(n)[0];
     }
 
     // distance between noun1 and noun2 (defined below)
     public int distance(String noun1, String noun2) {
+        if (noun1 == null)
+            throw new IllegalArgumentException("noun1 is null.");
+        if (noun2 == null)
+            throw new IllegalArgumentException("noun2 is null.");
+
         return sca.lengthSubset(noun_To_Synset_Lookup_Table.get(noun1),
                                 noun_To_Synset_Lookup_Table.get(noun2));
     }

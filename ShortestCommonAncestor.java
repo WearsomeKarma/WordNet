@@ -1,5 +1,7 @@
 import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Topological;
 
 public class ShortestCommonAncestor {
     Digraph digraph;
@@ -10,6 +12,11 @@ public class ShortestCommonAncestor {
     public ShortestCommonAncestor(Digraph G) {
         if (G == null)
             throw new IllegalArgumentException("Diagraph missing");
+
+        Topological topological = new Topological(G);
+        if (!topological.hasOrder())
+            throw new IllegalArgumentException("Digraph is not DAG.");
+
         digraph = new Digraph(G);
     }
 
@@ -31,6 +38,7 @@ public class ShortestCommonAncestor {
 
     // length of shortest ancestral path of vertex subsets A and B
     public int lengthSubset(Iterable<Integer> subsetA, Iterable<Integer> subsetB) {
+        validateArguments(subsetA, subsetB);
         BreadthFirstDirectedPaths vPath = new BreadthFirstDirectedPaths(digraph, subsetA);
         BreadthFirstDirectedPaths wPath = new BreadthFirstDirectedPaths(digraph, subsetB);
         findBoth(vPath, wPath);
@@ -39,12 +47,20 @@ public class ShortestCommonAncestor {
 
     // a shortest common ancestor of vertex subsets A and B
     public int ancestorSubset(Iterable<Integer> subsetA, Iterable<Integer> subsetB) {
+        validateArguments(subsetA, subsetB);
         BreadthFirstDirectedPaths vPath = new BreadthFirstDirectedPaths(digraph, subsetA);
         BreadthFirstDirectedPaths wPath = new BreadthFirstDirectedPaths(digraph, subsetB);
         findBoth(vPath, wPath);
         return ancestor;
     }
 
+    private void validateArguments(Iterable<Integer> subsetA, Iterable<Integer> subsetB)
+    {
+        if (subsetA == null)
+            throw new IllegalArgumentException("subsetA is null");
+        if (subsetB == null)
+            throw new IllegalArgumentException("subsetB is null");
+    }
 
     private void findBoth(BreadthFirstDirectedPaths vPath, BreadthFirstDirectedPaths wPath) {
         int shortestDistance = Integer.MAX_VALUE;

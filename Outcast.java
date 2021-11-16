@@ -6,12 +6,14 @@ public class Outcast {
 
     // constructor takes a WordNet object
     public Outcast(WordNet wordnet) {
+        if (wordnet == null)
+            throw new IllegalArgumentException("wordNet is null.");
         this.wordnet = wordnet;
     }
 
     // given an array of WordNet nouns, return an outcast
     public String outcast(String[] nouns) {
-        if (nouns.length <= 0)
+        if (nouns == null || nouns.length <= 0)
             throw new IllegalArgumentException("array empty");
         if (nouns.length == 1)
             return nouns[0];
