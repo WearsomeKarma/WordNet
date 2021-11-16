@@ -130,6 +130,16 @@ public class WordNet {
         StdOut.println("TEST: WordNet.ctor(synsets.txt, hypernyms.txt):");
         WordNet wordNet = new WordNet(args[0], args[1]);
         StdOut.println("TEST: WordNet.nouns()\nNOUNS: ");
+        StdOut.println("VERTS: " + wordNet.wordNet.V() + " EDGES: " + wordNet.wordNet.E());
+        StdOut.println("ADJ:");
+        for(int i=0;i<wordNet.wordNet.V();i++)
+        {
+            StdOut.print("v(" + i + "): ");
+
+            for(Integer adj : wordNet.wordNet.adj(i))
+                StdOut.print(adj + " ");
+            StdOut.println();
+        }
         for (String noun : wordNet.nouns())
             StdOut.print(noun + " ");
         StdOut.println();
