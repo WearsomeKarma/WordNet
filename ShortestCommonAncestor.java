@@ -11,7 +11,7 @@ public class ShortestCommonAncestor {
     // constructor takes a rooted DAG as argument
     public ShortestCommonAncestor(Digraph G) {
         if (G == null)
-            throw new IllegalArgumentException("Diagraph missing");
+            throw new NullPointerException("Diagraph missing");
 
         Topological topological = new Topological(G);
         if (!topological.hasOrder())
@@ -57,9 +57,9 @@ public class ShortestCommonAncestor {
     private void validateArguments(Iterable<Integer> subsetA, Iterable<Integer> subsetB)
     {
         if (subsetA == null)
-            throw new IllegalArgumentException("subsetA is null");
+            throw new NullPointerException("subsetA is null");
         if (subsetB == null)
-            throw new IllegalArgumentException("subsetB is null");
+            throw new NullPointerException("subsetB is null");
     }
 
     private void findBoth(BreadthFirstDirectedPaths vPath, BreadthFirstDirectedPaths wPath) {
