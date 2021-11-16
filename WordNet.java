@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Bag;
+import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
@@ -28,8 +29,8 @@ public class WordNet {
         read_Synsets(synsets);
 
         wordNet = new Digraph(synset_Points.size());
-        sca = new ShortestCommonAncestor(wordNet);
         read_Hypernyms(hypernyms);
+        sca = new ShortestCommonAncestor(wordNet);
     }
 
     private void read_Synsets(String synsets) {
@@ -39,7 +40,7 @@ public class WordNet {
         while ((s = stream_Synset.readLine()) != null) {
             String[] csv_Values = s.split(",");
 
-            if (csv_Values.length != 3)
+            if (csv_Values.length < 3)
                 throw new IllegalArgumentException(
                         "The CSV line is invalid and does not have exactly 3 entries. VALUE: " + s);
 
@@ -112,7 +113,7 @@ public class WordNet {
     public String sca(String noun1, String noun2) {
         int n = sca.ancestorSubset(noun_To_Synset_Lookup_Table.get(noun1),
                                    noun_To_Synset_Lookup_Table.get(noun2));
-        return synset_Points.get(n).toString();
+        return n+"";
     }
 
     // distance between noun1 and noun2 (defined below)
@@ -155,10 +156,25 @@ public class WordNet {
             return;
         }
         StdOut.println("TEST: WordNet.sca(noun1, noun2)");
+        test_bfs(wordNet.wordNet, wordNet.noun_To_Synset_Lookup_Table.get(args[2]), wordNet.noun_To_Synset_Lookup_Table.get(args[3]));
         String sca = wordNet.sca(args[2], args[3]);
         StdOut.println("SCA(" + args[2] + ", " + args[3] + "): " + sca);
         StdOut.println("TEST: WordNet.distance(noun1, noun2)");
         int distance = wordNet.distance(args[2], args[3]);
-        StdOut.println("DISTANCE(" + args[2] + ", " + args[3] + ")");
+        StdOut.println("DISTANCE(" + args[2] + ", " + args[3] + ") " + distance);
+    }
+
+    private static void test_bfs(Digraph digraph, Bag<Integer> v, Bag<Integer> w)
+    {
+        BreadthFirstDirectedPaths vPath = new BreadthFirstDirectedPaths(digraph, v);
+        BreadthFirstDirectedPaths wPath = new BreadthFirstDirectedPaths(digraph, w);
+
+        for(int i=0;i<digraph.V();i++)
+        {
+            boolean hasPath_v_to_i = vPath.hasPathTo(i);
+            boolean hasPath_w_to_i = wPath.hasPathTo(i);
+
+            StdOut.println("has_vPath(" + i + "): " + hasPath_v_to_i + " - has_wPath(" + i + "): " + hasPath_w_to_i);
+        }
     }
 }
