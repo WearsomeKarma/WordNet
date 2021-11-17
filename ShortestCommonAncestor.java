@@ -60,6 +60,10 @@ public class ShortestCommonAncestor {
             throw new NullPointerException("subsetA is null");
         if (subsetB == null)
             throw new NullPointerException("subsetB is null");
+        if (!subsetA.iterator().hasNext())
+            throw new IllegalArgumentException("subsetA is empty.");
+        if (!subsetB.iterator().hasNext())
+            throw new IllegalArgumentException("subsetB is empty.");
     }
 
     private void findBoth(BreadthFirstDirectedPaths vPath, BreadthFirstDirectedPaths wPath) {
